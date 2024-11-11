@@ -31,6 +31,7 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
     @Transactional
     void incrementOpeningCountByShortLink(String shortLink);
 
+
     @Query(value = """
         FROM LinkInfo
         WHERE (:linkPart IS NULL OR lower(link) LIKE '%' || lower(cast(:linkPart AS String)) || '%')
