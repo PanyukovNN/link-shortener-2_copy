@@ -59,7 +59,6 @@ public class LinkInfoServiceImpl implements LinkInfoService {
         Pageable pageable = mapPageable(page);
 
         return linkInfoRepository.findByFilter(
-                filterRequest.getLinkPart(),
                 filterRequest.getEndTimeFrom(),
                 filterRequest.getEndTimeTo(),
                 filterRequest.getDescriptionPart(),

@@ -33,14 +33,12 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
 
     @Query(value = """
         FROM LinkInfo
-        WHERE (:linkPart IS NULL OR lower(link) LIKE '%' || lower(cast(:linkPart AS String)) || '%')
-          AND (cast(:endTimeFrom AS DATE) IS NULL OR endTime >= :endTimeFrom)
+        WHERE (cast(:endTimeFrom AS DATE) IS NULL OR endTime >= :endTimeFrom)
           AND (cast(:endTimeTo AS DATE) IS NULL OR endTime <= :endTimeTo)
           AND (:descriptionPart IS NULL OR lower(description) LIKE '%' || lower(cast(:descriptionPart AS String)) || '%')
           AND (:active IS NULL OR active = :active)
         """)
-    Page<LinkInfo> findByFilter(String linkPart,
-                                LocalDateTime endTimeFrom,
+    Page<LinkInfo> findByFilter(LocalDateTime endTimeFrom,
                                 LocalDateTime endTimeTo,
                                 String descriptionPart,
                                 Boolean active,
