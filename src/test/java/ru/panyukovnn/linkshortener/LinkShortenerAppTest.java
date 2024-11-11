@@ -106,7 +106,7 @@ class LinkShortenerAppTest {
     @Test
     void when_postFilter_then_success() throws Exception {
         FilterLinkInfoRequest filterLinkInfoRequest = FilterLinkInfoRequest.builder()
-            .active(true)
+            .linkPart("go")
             .page(PageableRequest.builder()
                 .number(1)
                 .size(5)
@@ -119,7 +119,7 @@ class LinkShortenerAppTest {
 
         LinkInfo linkInfo = createMockLinkInfo();
 
-        when(linkInfoRepository.findByFilter(isNull(), isNull(), isNull(), eq(true), any(Pageable.class)))
+        when(linkInfoRepository.findByFilter(eq(filterLinkInfoRequest.getLinkPart()), isNull(), isNull(), isNull(), isNull(), any(Pageable.class)))
             .thenReturn(new PageImpl<>(List.of(linkInfo), PageRequest.of(0, 5), 1));
 
         mockMvc.perform(post(LINK_INFOS_BASE_URL + "/filter")

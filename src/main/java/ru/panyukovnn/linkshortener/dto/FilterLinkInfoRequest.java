@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FilterLinkInfoRequest {
 
+    private String linkPart;
     private LocalDateTime endTimeFrom;
     private LocalDateTime endTimeTo;
     private String descriptionPart;
