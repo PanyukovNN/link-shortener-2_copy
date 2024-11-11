@@ -26,11 +26,10 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
         UPDATE LinkInfo
         SET openingCount = openingCount + 1
         WHERE shortLink = :shortLink
-        """)
+        """ )
     @Modifying
     @Transactional
     void incrementOpeningCountByShortLink(String shortLink);
-
 
     @Query(value = """
         FROM LinkInfo
