@@ -19,10 +19,7 @@ services:
   link-shortener:
     depends_on:
       - postgres-link-shortener
-    build:
-      context: .
-      args:
-        TAG: $TAG
+    build: .
     container_name: link-shortener
     ports:
       - "8081:8080"

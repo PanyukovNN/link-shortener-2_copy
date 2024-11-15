@@ -7,7 +7,7 @@ pipeline {
                 script {
                     sshagent(credentials : ['metech-ssh']) {
                         def filesList = sh (script: "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'ls ./nexus'", returnStdout: true).trim()
-                        env.tag_response = input message: 'jars',
+                        env.jarName = input message: 'jars',
                             parameters: [choice(choices: "${filesList}", name: '')]
                      }
                 }
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 sshagent(credentials : ['metech-ssh']) {
                     sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'rm -r ./link-shortener/*'"
-                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cp ./nexus/link-shortener-2-${tag}.jar ./link-shortener/link-shortener.jar'"
+                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cp ./nexus/${jarName}.jar ./link-shortener/link-shortener.jar'"
                     sh "scp -o StrictHostKeyChecking=no ./release/deploy/docker-compose.yaml jenkins_tech@195.93.252.91:./link-shortener/docker-compose.yaml"
                     sh "scp -o StrictHostKeyChecking=no ./release/deploy/Dockerfile jenkins_tech@195.93.252.91:./link-shortener/Dockerfile"
                 }
@@ -36,7 +36,7 @@ pipeline {
         stage('deploy') {
             steps {
                 sshagent(credentials : ['metech-ssh']) {
-                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cd link-shortener && TAG=${tag} docker compose up -d --build'"
+                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cd link-shortener && docker compose up -d --build'"
                 }
             }
         }
