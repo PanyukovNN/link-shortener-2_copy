@@ -13,6 +13,7 @@ pipeline {
         stage('prepare') {
             steps {
                 sshagent(credentials : ['metech-ssh']) {
+                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'rm ./link-shortener/*'"
                     sh "scp -o StrictHostKeyChecking=no ./release/deploy/docker-compose.yaml jenkins_tech@195.93.252.91:./link-shortener/docker-compose.yaml"
                     sh "scp -o StrictHostKeyChecking=no ./release/deploy/Dockerfile jenkins_tech@195.93.252.91:./link-shortener/Dockerfile"
                 }
