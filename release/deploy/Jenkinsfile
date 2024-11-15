@@ -22,7 +22,7 @@ pipeline {
         stage('deploy') {
             steps {
                 sshagent(credentials : ['metech-ssh']) {
-                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cd link-shortener && docker compose up -d --build'"
+                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cd link-shortener && TAG=${tag} docker compose up -d --build'"
                 }
             }
         }
