@@ -15,7 +15,7 @@ pipeline {
         stage('load to remote server') {
             steps {
                 sshagent(credentials : ['metech-ssh']) {
-                    sh "scp -o StrictHostKeyChecking=no ./build/libs/link-shortener-${tag}.jar metech@195.93.252.91:./link-shortener/link-shortener.jar"
+                    sh "scp -o StrictHostKeyChecking=no ./build/libs/link-shortener-${tag}.jar jenkins_tech@195.93.252.91:./link-shortener/link-shortener.jar"
                 }
             }
         }
