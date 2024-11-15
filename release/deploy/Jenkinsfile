@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('stop') {
+            steps {
+                sshagent(credentials : ['metech-ssh']) {
+                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cd link-shortener && docker compose down'"
+                }
+            }
+        }
+
+        stage('prepare') {
+            steps {
+                sshagent(credentials : ['metech-ssh']) {
+                    sh "scp -o StrictHostKeyChecking=no ./docker-compose.yaml jenkins_tech@195.93.252.91:./link-shortener/docker-compose.yaml"
+                    sh "scp -o StrictHostKeyChecking=no ./Dockerfile jenkins_tech@195.93.252.91:./link-shortener/Dockerfile"
+                }
+            }
+        }
+
+        stage('deploy') {
+            steps {
+                sshagent(credentials : ['metech-ssh']) {
+                    sh "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'cd link-shortener && docker compose up -d --build'"
+                }
+            }
+        }
+
+
+        // шаги:
+        // остановить предыдущую сборку
+        // скопировать докерфайл и докер компоуз
+        // добавить внешние конфиги
+    }
+}
