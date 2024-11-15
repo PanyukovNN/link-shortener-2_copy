@@ -2,6 +2,18 @@ pipeline {
     agent any
 
     stages {
+        stage('choose tag') {
+            steps {
+                script {
+                    sshagent(credentials : ['metech-ssh']) {
+                        def filesList = sh (script: "ssh -o StrictHostKeyChecking=no -l jenkins_tech 195.93.252.91 'ls ./nexus'", returnStdout: true).trim()
+                        env.tag_response = input message: 'jars',
+                            parameters: [choice(choices: "${filesList}", name: '')]
+                     }
+                }
+            }
+        }
+
         stage('stop') {
             steps {
                 sshagent(credentials : ['metech-ssh']) {
